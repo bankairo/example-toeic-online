@@ -1,8 +1,2 @@
-<html>
-<head>
-    <title>Test all module</title>
-</head>
-<body>
-<h1>Test project</h1>
-</body>
-</html>
+<%@ include file="/common/taglib.jsp"%>
+<c:redirect url="/home.html"/>

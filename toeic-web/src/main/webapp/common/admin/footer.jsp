@@ -4,6 +4,9 @@
     <title>Title</title>
 </head>
 <body>
-
+    <div style="clear: both;">
+        <hr/>
+        <p>Copyright 2018 toeiconline.vn</p>
+    </div>
 </body>
 </html>
