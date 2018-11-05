@@ -16,14 +16,14 @@
             <div class="space-6"></div>
             <form action="${formUrl}" method="post">
                 <fieldset>
-                    <%--<c:if test="${not empty messageResponse}">--%>
+                    <c:if test="${not empty messageResponse}">
                         <div class="alert alert-block alert-${alert}">
                             <button type="button" class="close" data-dismiss="alert">
                                 <i class="ace-icon fa fa-times"></i>
                             </button>
-                                <%--${messageResponse}--%>
+                                ${messageResponse}
                         </div>
-                    <%--</c:if>--%>
+                    </c:if>
                     <label class="block clearfix">
 							<span class="block input-icon input-icon-right">
 									    <input type="text" class="form-control" placeholder="Username" name="pojo.name"/>
