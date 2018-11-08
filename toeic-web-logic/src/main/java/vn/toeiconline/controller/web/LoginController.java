@@ -5,8 +5,8 @@ import vn.toeiconline.command.UserCommand;
 import vn.toeiconline.core.dto.UserDTO;
 import vn.toeiconline.core.service.UserService;
 import vn.toeiconline.core.service.impl.UserServiceImpl;
+import vn.toeiconline.core.web.common.WebConstant;
 import vn.toeiconline.core.web.utils.FormUtil;
-import vn.toeiconline.web.logic.common.WebConstant;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,11 +34,9 @@ public class LoginController extends HttpServlet {
             if (userService.isUserExist(pojo) != null) {
                 if (userService.findRoleByUser(pojo) != null && userService.findRoleByUser(pojo).getRoleDTO() != null) {
                     if (userService.findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_NAME_ADMIN)) {
-                        req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-                        req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Tài khoản là admin");
+                        resp.sendRedirect("/admin-home.html");
                     } else if (userService.findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_NAME_USER)) {
-                        req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-                        req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Tài khoản là user");
+                       resp.sendRedirect("/home.html");
                     }
                 }
             }
@@ -46,8 +44,8 @@ public class LoginController extends HttpServlet {
             log.error(e.getMessage(), e);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Tên hoặc mật khẩu sai");
+            RequestDispatcher rd = req.getRequestDispatcher("/views/web/login.jsp");
+            rd.forward(req, resp);
         }
-        RequestDispatcher rd = req.getRequestDispatcher("/views/web/login.jsp");
-        rd.forward(req, resp);
     }
 }

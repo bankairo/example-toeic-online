@@ -48,7 +48,7 @@ public class RoleTest {
         String sortDirection = null;
         sortExpression = "name";
         sortDirection = "2";
-        Object[] listObj = roleDao.findByProperty(property, value, sortExpression, sortDirection);
+        Object[] listObj = roleDao.findByProperty(property, value, sortExpression, sortDirection, null, null);
     }
 
     @Test
