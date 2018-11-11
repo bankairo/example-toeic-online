@@ -2,9 +2,9 @@
 <suite name="TestAll">
     <test name="case1">
         <classes>
-            <!--<class name="vn.myclass.api.test.LoginTest"/>-->
-            <!--<class name="vn.myclass.api.test.ListenGuidelineTest"/>-->
-            <!--<class name="vn.myclass.api.test.reviewHashMap"/>-->
+            <class name="vn.toeiconline.core.test.ListenGuidelineTest"/>
+            <class name="vn.toeiconline.core.test.RoleTest"/>
+            <class name="vn.toeiconline.core.test.UserTest"/>
         </classes>
     </test>
 </suite>

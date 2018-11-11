@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="requestUrl" value="/admin-guideline-listen-list.html" />
+<c:url var="listenGuidelineEditUrl" value="/admin-guideline-listen-edit.html">
+    <c:param name="urlType" value="url_edit"/>
+</c:url>
+<html>
 <head>
     <title><fmt:message key="label.guideline.listen.list" bundle="${lang}"/></title>
 </head>
@@ -22,6 +26,7 @@
         </div>
         <div class="page-content">
             <div class="row">
+                <a href="${listenGuidelineEditUrl}" type="button"> Thêm bài hướng dẫn </a>
                 <div class="col-xs-12">
                     <div class="table-responsive">
                         <fmt:bundle basename="ApplicationResources">

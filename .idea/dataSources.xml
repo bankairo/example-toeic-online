@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@localhost" uuid="0c1d8fa1-bc03-4e80-bbcf-1b1eed3f157f">
+    <data-source source="LOCAL" name="@localhost" uuid="45aeb897-3960-4dca-a2ab-d8e2f1733643">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
@@ -15,7 +15,7 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="603b6a91-2d7c-4137-a3ce-ec6c81805f05">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="c1016cdd-67e9-46e5-a441-fb88650aad72">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
@@ -31,39 +31,7 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="0c8a710e-9d22-4fb7-b578-6575e071ce96">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/toeic-web/src/main/resources/hibernate.cfg.xml</remarks>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/toeiconline?autoReconnect=true&amp;characterEncoding=utf-8&amp;useUnicode=true&amp;connectionCollation=utf8_unicode_ci&amp;characterSetResults=utf8</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="a89f755f-9cb6-47ed-a56f-b3dc9dc50ecb">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/toeic-core-test/src/main/resources/hibernate.cfg.xml</remarks>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/toeiconline?autoReconnect=true&amp;characterEncoding=utf-8&amp;useUnicode=true&amp;connectionCollation=utf8_unicode_ci&amp;characterSetResults=utf8</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="b11605c5-0f68-461d-bfb1-0a2304a3fde3">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="706cd095-9dfb-4069-90a7-72395e195230">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>

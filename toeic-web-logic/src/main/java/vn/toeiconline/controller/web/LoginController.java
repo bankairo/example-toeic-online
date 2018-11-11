@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 @WebServlet("/login.html")
 public class LoginController extends HttpServlet {
@@ -30,6 +31,7 @@ public class LoginController extends HttpServlet {
         UserCommand command = FormUtil.populate(UserCommand.class, req);
         UserDTO pojo = command.getPojo();
         UserService userService = new UserServiceImpl();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
         try {
             if (userService.isUserExist(pojo) != null) {
                 if (userService.findRoleByUser(pojo) != null && userService.findRoleByUser(pojo).getRoleDTO() != null) {
@@ -43,7 +45,7 @@ public class LoginController extends HttpServlet {
         } catch (NullPointerException e) {
             log.error(e.getMessage(), e);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
-            req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Tên hoặc mật khẩu sai");
+            req.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.login.username.password.wrong"));
             RequestDispatcher rd = req.getRequestDispatcher("/views/web/login.jsp");
             rd.forward(req, resp);
         }

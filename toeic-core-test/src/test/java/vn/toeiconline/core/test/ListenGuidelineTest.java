@@ -1,16 +1,27 @@
 package vn.toeiconline.core.test;
 
-import org.junit.Test;
+
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import vn.toeiconline.core.dao.ListenGuidelineDao;
 import vn.toeiconline.core.daoimpl.ListenGuidelineDaoImpl;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ListenGuidelineTest {
+    ListenGuidelineDao listenGuidelineDao;
+
+    @BeforeTest
+    public void initData() {
+        listenGuidelineDao = new ListenGuidelineDaoImpl();
+    }
 
     @Test
     public void checkFindByProperties() {
-        ListenGuidelineDao listenGuidelineDao = new ListenGuidelineDaoImpl();
-        Object[] result = listenGuidelineDao.findByProperty(null, null, null, null, 2, 2);
+        Map<String, Object> property = new HashMap<String, Object>();
+        property.put("title", "Bai hd 8");
+        property.put("content", "Noi dung bai hd 8");
+        Object[] result = listenGuidelineDao.findByProperty(property, null, null, null, null);
     }
 }
