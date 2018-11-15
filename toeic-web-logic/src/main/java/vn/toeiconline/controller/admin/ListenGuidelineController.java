@@ -1,5 +1,6 @@
 package vn.toeiconline.controller.admin;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
 import vn.toeiconline.command.ListenGuidelineCommand;
@@ -62,11 +63,13 @@ public class ListenGuidelineController extends HttpServlet {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
         ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
         UploadUtil uploadUtil = new UploadUtil();
-        Set<String> titleValue = new HashSet<String>();
-        titleValue.add("pojo.title");
-        titleValue.add("pojo.content");
+        Set<String> titleValue = buildSetValue();
         try {
             Object[] objects = uploadUtil.writeOrUpdateFile(req, titleValue, WebConstant.LISTENGUIDELINE);
+            Map<String, String> mapValue = (HashMap<String, String>) objects[3];
+            if (mapValue != null) {
+                command = returnValueListenGuidelintCommand(titleValue, command, mapValue);
+            }
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.guideline.listen.add.success"));
         } catch (FileUploadException e) {
@@ -81,5 +84,25 @@ public class ListenGuidelineController extends HttpServlet {
 //        resp.sendRedirect("/admin-guideline-listen-edit.html?urlType=url_edit");
         RequestDispatcher rd = req.getRequestDispatcher("/views/admin/listenguideline/edit.jsp");
         rd.forward(req, resp);
+    }
+
+    private ListenGuidelineCommand returnValueListenGuidelintCommand(Set<String> titleValue, ListenGuidelineCommand command, Map<String,String> mapValue) {
+        for (String item: titleValue) {
+            if (mapValue.containsKey(item)) {
+                if (item.equals("pojo.title")) {
+                    command.getPojo().setTitle(mapValue.get(item));
+                } else if (item.equals("pojo.content")){
+                    command.getPojo().setContent(mapValue.get(item));
+                }
+            }
+        }
+        return command;
+    }
+
+    private Set<String> buildSetValue() {
+        Set<String> titleValue = new HashSet<String>();
+        titleValue.add("pojo.title");
+        titleValue.add("pojo.content");
+        return titleValue;
     }
 }

@@ -2,11 +2,13 @@ package vn.toeiconline.controller.web;
 
 import org.apache.log4j.Logger;
 import vn.toeiconline.command.UserCommand;
+import vn.toeiconline.core.dto.CheckLogin;
 import vn.toeiconline.core.dto.UserDTO;
 import vn.toeiconline.core.service.UserService;
 import vn.toeiconline.core.service.impl.UserServiceImpl;
 import vn.toeiconline.core.web.common.WebConstant;
 import vn.toeiconline.core.web.utils.FormUtil;
+import vn.toeiconline.core.web.utils.SingletonServiceUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,24 +32,20 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserCommand command = FormUtil.populate(UserCommand.class, req);
         UserDTO pojo = command.getPojo();
-        UserService userService = new UserServiceImpl();
+        CheckLogin login = SingletonServiceUtil.getUserServiceInstance().checkLogin(pojo.getName(), pojo.getPassword());
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
-        try {
-            if (userService.isUserExist(pojo) != null) {
-                if (userService.findRoleByUser(pojo) != null && userService.findRoleByUser(pojo).getRoleDTO() != null) {
-                    if (userService.findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_NAME_ADMIN)) {
+
+            if (login.getExist()) {
+                    if (login.getRoleName().equals(WebConstant.ROLE_NAME_ADMIN)) {
                         resp.sendRedirect("/admin-home.html");
-                    } else if (userService.findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_NAME_USER)) {
+                    } else if (login.getRoleName().equals(WebConstant.ROLE_NAME_USER)) {
                        resp.sendRedirect("/home.html");
                     }
-                }
+            } else {
+                req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
+                req.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.login.username.password.wrong"));
+                RequestDispatcher rd = req.getRequestDispatcher("/views/web/login.jsp");
+                rd.forward(req, resp);
             }
-        } catch (NullPointerException e) {
-            log.error(e.getMessage(), e);
-            req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
-            req.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.login.username.password.wrong"));
-            RequestDispatcher rd = req.getRequestDispatcher("/views/web/login.jsp");
-            rd.forward(req, resp);
-        }
     }
 }
