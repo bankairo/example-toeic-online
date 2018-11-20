@@ -2,6 +2,7 @@ package vn.toeiconline.controller.admin;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import vn.toeiconline.command.ListenGuidelineCommand;
 import vn.toeiconline.core.common.utils.UploadUtil;
@@ -28,28 +29,11 @@ public class ListenGuidelineController extends HttpServlet {
     private final Logger log = Logger.getLogger(this.getClass());
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        ListenGuidelineCommand command = new ListenGuidelineCommand();
-//        List<ListenGuidelineDTO> listenGuidelineDTOS = new ArrayList<ListenGuidelineDTO>();
-//        ListenGuidelineDTO dto1 = new ListenGuidelineDTO();
-//        dto1.setTitle("Bai hd nghe 1");
-//        dto1.setContent("Noi dung bai hd nghe 1");
-//        ListenGuidelineDTO dto2 = new ListenGuidelineDTO();
-//        dto2.setTitle("Bai hd nghe 2");
-//        dto2.setContent("Noi dung bai hd nghe 2");
-//        listenGuidelineDTOS.add(dto1);
-//        listenGuidelineDTOS.add(dto2);
-//        command.setListResult(listenGuidelineDTOS);
-//        command.setMaxPageItems(1);
-//        command.setTotalItems(listenGuidelineDTOS.size());
-//        req.setAttribute(WebConstant.LIST_ITEMS, command);
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, req);
-//        command.setMaxPageItems(2);
-////        RequestUtil.initSearchBean(req, command);
-////        Object[] objects = listenGuidelineService.findListenGuidelineByProperties(null, null, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
-////        command.setListResult((List<ListenGuidelineDTO>) objects[1]);
-////        command.setTotalItems(Integer.parseInt(objects[0].toString()));
-        req.setAttribute(WebConstant.LIST_ITEMS, command);
+
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
+            excuteSearchListenGuideline(req, command);
+            req.setAttribute(WebConstant.LIST_ITEMS, command);
             RequestDispatcher rd = req.getRequestDispatcher("/views/admin/listenguideline/list.jsp");
             rd.forward(req, resp);
         } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_EDIT)) {
@@ -58,32 +42,45 @@ public class ListenGuidelineController extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
         ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
         UploadUtil uploadUtil = new UploadUtil();
         Set<String> titleValue = buildSetValue();
-        try {
-            Object[] objects = uploadUtil.writeOrUpdateFile(req, titleValue, WebConstant.LISTENGUIDELINE);
+
+        Object[] objects = uploadUtil.writeOrUpdateFile(req, titleValue, WebConstant.LISTENGUIDELINE);
+         if (objects != null && (Boolean) objects[0]) {
             Map<String, String> mapValue = (HashMap<String, String>) objects[3];
             if (mapValue != null) {
                 command = returnValueListenGuidelintCommand(titleValue, command, mapValue);
             }
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.guideline.listen.add.success"));
-        } catch (FileUploadException e) {
-            log.error(e.getMessage(), e);
-            req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
-            req.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+        } else {
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
         }
 //        resp.sendRedirect("/admin-guideline-listen-edit.html?urlType=url_edit");
         RequestDispatcher rd = req.getRequestDispatcher("/views/admin/listenguideline/edit.jsp");
         rd.forward(req, resp);
+    }
+
+    private void excuteSearchListenGuideline(HttpServletRequest req, ListenGuidelineCommand command) {
+        RequestUtil.initSearchBean(req, command);
+        Map<String, Object> property = buildProperty(command);
+        Object[] objects = listenGuidelineService.findListenGuidelineByProperties(property, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
+        command.setListResult((List<ListenGuidelineDTO>) objects[1]);
+        command.setTotalItems(Integer.parseInt(objects[0].toString()));
+    }
+
+    private Map<String,Object> buildProperty(ListenGuidelineCommand command) {
+        Map<String, Object> property = new HashMap<String, Object>();
+        if (StringUtils.isNotBlank(command.getPojo().getTitle())) {
+            property.put("title", command.getPojo().getTitle());
+        }
+        return property;
     }
 
     private ListenGuidelineCommand returnValueListenGuidelintCommand(Set<String> titleValue, ListenGuidelineCommand command, Map<String,String> mapValue) {
