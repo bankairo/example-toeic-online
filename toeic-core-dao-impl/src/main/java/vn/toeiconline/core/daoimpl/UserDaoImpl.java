@@ -9,6 +9,9 @@ import vn.toeiconline.core.dao.UserDao;
 import vn.toeiconline.core.data.daoimpl.AbstractDao;
 import vn.toeiconline.core.persistence.entity.UserEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements UserDao {
 
     public Object[] checkLogin(String name, String password) {
@@ -33,5 +36,24 @@ public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements Use
             session.close();
         }
         return new Object[]{isExist, roleName};
+    }
+
+    public List<UserEntity> findByUser(List<String> names) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        List<UserEntity> result = new ArrayList<UserEntity>();
+        try {
+            String sql = "FROM UserEntity ue WHERE ue.name IN(:names) ";
+            Query query = session.createQuery(sql);
+            query.setParameterList("names", names);
+            result = query.list();
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }
