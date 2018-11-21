@@ -19,6 +19,9 @@
     <script type="text/javascript" src="<c:url value="/template/admin/js/global_admin_script.js"/>"></script>
     <script src="<c:url value='/template/admin/assets/js/jquery.validate.min.js' />"></script>
 
+    <%--CK EDITOR--%>
+    <script src="<c:url value='/ckeditor/ckeditor.js' />"></script>
+
     <%--&lt;%&ndash;ckeditor plugin&ndash;%&gt;--%>
     <%--<script type="text/javascript" src="<c:url value="/ckeditor/ckeditor.js"/>"></script>--%>
 
