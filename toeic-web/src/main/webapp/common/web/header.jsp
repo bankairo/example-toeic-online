@@ -26,7 +26,7 @@
                                 </li>
                                 <li><a href="service.html">Services</a></li>
                                 <c:if test="${not empty login_name}">
-                                    <li>Xin chao: ${login_name}</li>
+                                    <li><fmt:message key="label.welcome" bundle="${lang}"/> : ${login_name}</li>
                                     <c:url var="logoutUrl" value="/logout.html">
                                         <c:param name="action" value="logout"/>
                                     </c:url>
