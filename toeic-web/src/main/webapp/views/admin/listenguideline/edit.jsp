@@ -4,6 +4,11 @@
 <html>
 <head>
     <title><fmt:message key="label.guideline.listen.edit" bundle="${lang}"/></title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <div class="main-content">
@@ -32,18 +37,11 @@
                                 ${messageResponse}
                         </div>
                     </c:if>
-                    <form action="${formUrl}" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.title" bundle="${lang}"/></label>
-                            <div class="col-sm-9">
-                            </div>
-                        </div>
-                        <br/>
-                        <br/>
+                    <form action="${formUrl}" method="post" enctype="multipart/form-data" id="formEdit">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.filed.title" bundle="${lang}"/></label>
                             <div class="col-sm-9">
-                                <input type="text" name="pojo.title"/>
+                                <input type="text" name="pojo.title" id="title" value="${item.pojo.title}"/>
                             </div>
                         </div>
                         <br/>
@@ -51,15 +49,31 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.upload.image" bundle="${lang}"/></label>
                             <div class="col-sm-9">
-                                <input type="file" name="file"/>
+                                <input type="file" name="file" id="uploadImage"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.view.image" bundle="${lang}"/></label>
+                            <c:if test="${not empty item.pojo.image}">
+                                <c:set var="image" value="/repository/${item.pojo.image}"/>
+                            </c:if>
+                            <div class="col-sm-9">
+                                <img src="${image}" name="viewImage" id="viewImage" width="150px" height="150px"/>
                             </div>
                         </div>
                         <br/>
                         <br/>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.filed.content" bundle="${lang}"/></label>
-                            <div class="col-sm-9">
-                                <input type="text" name="pojo.content"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <c:if test="${not empty item.pojo.content}">
+                                    <c:set var="content" value="${item.pojo.content}"/>
+                                </c:if>
+                                <textarea name="pojo.content" id="listenGuidelineContent">${content}</textarea>
                             </div>
                         </div>
                         <br/>
@@ -68,11 +82,66 @@
                                 <input type="submit" class="btn btn-white btn-warning btn-bold" value="<fmt:message key="label.done" bundle="${lang}"/>"/>
                             </div>
                         </div>
+                        <c:if test="${not empty item.pojo.listenGuidelineId}">
+                            <input type="hidden" name="pojo.listenGuidelineId" value="${item.pojo.listenGuidelineId}"/>
+                        </c:if>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var listenGuilineImage = null;
+    <c:if test="${not empty item.pojo.image}">
+        listenGuilineImage = "${item.pojo.image}";
+    </c:if>
+    $(document).ready(function () {
+        CKEDITOR.replace("listenGuidelineContent");
+        validateData();
+        $("#uploadImage").change(function () {
+            readURL(this, "viewImage");
+        });
+    });
+    function validateData() {
+      $("#formEdit").validate({
+          ignore: [],
+          rules: [],
+          messages: []
+      });
+      $("#title").rules( "add", {
+            required: true,
+            messages: {
+                required: "<fmt:message key='label.not.empty' bundle='${lang}'/>"
+            }
+      });
+      if (listenGuilineImage == null) {
+          $("#uploadImage").rules( "add", {
+              required: true,
+              messages: {
+                  required: "<fmt:message key='label.not.empty' bundle='${lang}'/>"
+              }
+          });
+      }
+      $("#listenGuidelineContent").rules( "add", {
+            required: function () {
+                CKEDITOR.instances.listenGuidelineContent.updateElement();
+            },
+            messages: {
+                required: "<fmt:message key='label.not.empty' bundle='${lang}'/>"
+            }
+      });
+    }
+
+    function readURL(input, imageId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#" + imageId).attr("src", reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 </body>
 </html>

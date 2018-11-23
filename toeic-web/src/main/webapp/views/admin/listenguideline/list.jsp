@@ -111,12 +111,12 @@
                                     <display:column property="title" titleKey="label.guideline.listen.title" sortable="true" sortName="title"/>
                                     <display:column property="content" titleKey="label.guideline.listen.content" sortable="true" sortName="content"/>
                                     <display:column headerClass="col-actions" titleKey="label.action">
-                                        <%--<c:url var="editUrl" value="/admin-guideline-listen-edit.html">--%>
-                                            <%--<c:param name="urlType" value="url_edit"/>--%>
-                                            <%--<c:param name="pojo.listenGuidelineId" value="${tableList.listenGuidelineId}"/>--%>
-                                        <%--</c:url>--%>
+                                        <c:url var="editUrl" value="/admin-guideline-listen-edit.html">
+                                            <c:param name="urlType" value="url_edit"/>
+                                            <c:param name="pojo.listenGuidelineId" value="${tableList.listenGuidelineId}"/>
+                                        </c:url>
                                         <a class="btn btn-sm btn-primary btn-edit" href="${editUrl}" data-toggle="tooltip" title="<fmt:message key='label.listenguideline.edit' bundle='${lang}'/>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                        <a class="btn btn-sm btn-danger btn-cancel" data-toggle="tooltip" title="<fmt:message key='label.listenguideline.delete' bundle='${lang}'/>"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        <%--<a class="btn btn-sm btn-danger btn-cancel" data-toggle="tooltip" title="<fmt:message key='label.listenguideline.delete' bundle='${lang}'/>"><i class="fa fa-trash" aria-hidden="true"></i></a>--%>
                                     </display:column>
                                 </display:table>
                             </fmt:bundle>
@@ -136,6 +136,13 @@
            $("#formUrl").submit();
        });
     });
+    function warningBeforeDelete() {
+        showAlertBeforeDelete(function () {
+            $("#urlType").val("url_list");
+            $("#crudaction").val("redirect_delete");
+            $("#formUrl").submit();
+        });
+    }
 </script>
 </body>
 </html>

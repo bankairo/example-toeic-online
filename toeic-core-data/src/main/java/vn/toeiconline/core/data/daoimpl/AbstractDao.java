@@ -1,5 +1,6 @@
 package vn.toeiconline.core.data.daoimpl;
 
+import org.apache.log4j.Logger;
 import org.hibernate.*;
 import vn.toeiconline.core.common.constant.CoreConstant;
 import vn.toeiconline.core.common.utils.HibernateUtil;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T> {
     private Class<T> persistenceClass;
+    private final Logger log = Logger.getLogger(this.getClass());
     public AbstractDao() {
         this.persistenceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
@@ -35,6 +37,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();
@@ -52,6 +55,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();
@@ -68,6 +72,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();
@@ -85,6 +90,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             }
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();
@@ -99,7 +105,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         Transaction transaction = session.beginTransaction();
         try {
             StringBuilder sql1 = new StringBuilder("from ");
-            sql1.append(this.getPersistenceClassName());
+            sql1.append(this.getPersistenceClassName()).append(" WHERE 1=1 ");
             String[] params = new String[property.size()];
             Object[] values = new Object[property.size()];
             if (property.size() > 0) {
@@ -110,16 +116,9 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
                     i++;
                 }
                 for (int i1 = 0; i1 < property.size(); i1++) {
-                    if (i1 == 0) {
-                        sql1.append(" where ").append(params[i1]).append("= :" + params[i1]);
-                    } else {
-                        sql1.append(" and ").append(params[i1]).append("= :" + params[i1]);
-                    }
+                        sql1.append(" AND ").append("LOWER(" + params[i1] + ") LIKE '%' || :" + params[i1] + " || '%'");
                 }
             }
-//            if (property != null && value != null) {
-//                sql1.append(" where ").append(property).append("= :value");
-//            }
             if (sortExpression != null && sortDirection != null) {
                 sql1.append(" order by ").append(sortExpression).append(" " + (sortDirection.equals(CoreConstant.SORT_DESC)?"desc":"asc"));
             }
@@ -129,9 +128,6 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
                     query1.setParameter(params[i2], values[i2]);
                 }
             }
-//            if (value != null) {
-//                query1.setParameter("value", value);
-//            }
             if (offset != null && offset >= 0) {
                 query1.setFirstResult(offset);
             }
@@ -141,32 +137,23 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             list = query1.list();
 
             StringBuilder sql2 = new StringBuilder("select count(*) from ");
-            sql2.append(this.getPersistenceClassName());
+            sql2.append(this.getPersistenceClassName()).append(" WHERE 1=1 ");
             if (property.size() > 0) {
                 for (int j = 0; j < property.size(); j++) {
-                    if (j == 0) {
-                        sql2.append(" where ").append(params[j]).append("= :" + params[j]);
-                    } else {
-                        sql2.append(" and ").append(params[j]).append("= :" + params[j]);
-                    }
+                        sql2.append(" AND ").append("LOWER(" + params[j] + ") LIKE '%' || :" + params[j] + " || '%'");
                 }
             }
-//            if (property != null && value != null) {
-//                sql2.append(" where ").append(property).append("= :value");
-//            }
             Query query2 = session.createQuery(sql2.toString());
             if (property.size() > 0) {
                 for (int j1 = 0; j1 < property.size(); j1++) {
                     query2.setParameter(params[j1], values[j1]);
                 }
             }
-//            if (value != null) {
-//                query2.setParameter("value", value);
-//            }
             totalRow = query2.list().get(0);
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();
@@ -187,6 +174,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();
@@ -206,6 +194,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
+            log.error(e.getMessage(), e);
             throw e;
         } finally {
             session.close();

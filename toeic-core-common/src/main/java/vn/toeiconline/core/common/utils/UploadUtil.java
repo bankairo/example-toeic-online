@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,13 @@ public class UploadUtil {
     private final int maxRequestSize = 1024 * 1024 * 50; //50MB
 
     public Object[] writeOrUpdateFile(HttpServletRequest request, Set<String> titleValue, String path) {
-        ServletContext context = request.getServletContext();
-        String address = context.getRealPath("fileupload");
+        String address = "/fileupload";
         boolean check = true;
         String fileLocation = null;
         String name = null;
         Map<String, String> mapReturnValue = new HashMap<String, String>();
+
+        checkAndCreateFolder(address, path);
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
@@ -50,11 +52,10 @@ public class UploadUtil {
             List<FileItem> items = upload.parseRequest(request);
             for (FileItem item: items) {
                 if (!item.isFormField()) {
-                    String fileName = item.getName();
-                    if (StringUtils.isNotBlank(fileName)) {
-                        name = fileName;
-                        File uploadedFile = new File(address + File.separator + path + File.separator + fileName);
-                        fileLocation = address + File.separator + path + File.separator + fileName;
+                    name = item.getName();
+                    if (StringUtils.isNotBlank(name)) {
+                        File uploadedFile = new File(address + File.separator + path + File.separator + name);
+                        fileLocation = address + File.separator + path + File.separator + name;
                         boolean isExist = uploadedFile.exists();
                         try {
                             if (isExist) {
@@ -72,7 +73,12 @@ public class UploadUtil {
                     }
                 } else {
                     String nameFiled = item.getFieldName();
-                    String valueField = item.getString();
+                    String valueField = null;
+                    try {
+                        valueField = item.getString("UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        log.error(e.getMessage(), e);
+                    }
                     if (titleValue.contains(nameFiled)) {
                         mapReturnValue.put(nameFiled, valueField);
                     }
@@ -82,6 +88,17 @@ public class UploadUtil {
             check = false;
             log.error(e.getMessage(), e);
         }
-        return new Object[]{check, fileLocation, name, mapReturnValue};
+        return new Object[]{check, fileLocation, path + File.separator + name, mapReturnValue};
+    }
+
+    private void checkAndCreateFolder(String address, String path) {
+        File folderRoot = new File(address);
+        if (!folderRoot.exists()) {
+            folderRoot.mkdirs();
+        }
+        File folderChild = new File(address + File.separator + path);
+        if (!folderChild.exists()) {
+            folderChild.mkdirs();
+        }
     }
 }
