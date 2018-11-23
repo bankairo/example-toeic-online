@@ -97,7 +97,9 @@
         listenGuilineImage = "${item.pojo.image}";
     </c:if>
     $(document).ready(function () {
-        CKEDITOR.replace("listenGuidelineContent");
+        var editor = CKEDITOR.replace("listenGuidelineContent");
+        CKFinder.setupCKEditor( editor, '/ckfinder/' );
+
         validateData();
         $("#uploadImage").change(function () {
             readURL(this, "viewImage");

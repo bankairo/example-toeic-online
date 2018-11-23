@@ -64,13 +64,29 @@ public class UserController extends HttpServlet {
             rd.forward(request, response);
         } else if (command.getUrlType() != null && command.getUrlType().equals(VALIDATE_IMPORT)) {
             List<UserImportDTO> userImportDTOS = (List<UserImportDTO>) SessionUtil.getInstance().getValue(request, IMPORT_USER_LIST);
-            command.setUserImportDTOS(userImportDTOS);
-            command.setMaxPageItems(3);
-            command.setTotalItems(userImportDTOS.size());
+            command.setUserImportDTOS(returnListUserImport(request, command, userImportDTOS));
+
             request.setAttribute(WebConstant.LIST_ITEMS, command);
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/importuser.jsp");
             rd.forward(request, response);
         }
+    }
+
+    private List<UserImportDTO> returnListUserImport(HttpServletRequest request, UserCommand command, List<UserImportDTO> userImportDTOS) {
+        command.setMaxPageItems(3);
+        command.setTotalItems(userImportDTOS.size());
+        RequestUtil.initSearchBean(request, command);
+        int fromIndex = command.getFirstItem();
+        if (fromIndex > command.getTotalItems()) {
+            fromIndex = 0;
+            command.setFirstItem(0);
+            command.setPage(1);
+        }
+        int toIndex = fromIndex + command.getMaxPageItems();
+        if (toIndex > command.getTotalItems()) {
+            toIndex = command.getTotalItems();
+        }
+        return userImportDTOS.subList(fromIndex, toIndex);
     }
 
     @Override

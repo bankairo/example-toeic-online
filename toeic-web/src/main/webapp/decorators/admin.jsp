@@ -22,6 +22,9 @@
     <%--CK EDITOR--%>
     <script src="<c:url value='/ckeditor/ckeditor.js' />"></script>
 
+    <%--CK FINDER--%>
+    <script type="text/javascript" src="<c:url value="/ckfinder/ckfinder.js"/>"></script>
+
     <%--sweetalert--%>
     <script type='text/javascript' src='<c:url value="/template/admin/sweetalert2/sweetalert2.min.js"/>'></script>
     <link rel="stylesheet" href="<c:url value="/template/admin/sweetalert2/sweetalert2.min.css"/>">
