@@ -30,6 +30,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntityList;
 
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    private List<ResultEntity> resultEntityList;
+
     public Integer getUserId() {
         return userId;
     }
