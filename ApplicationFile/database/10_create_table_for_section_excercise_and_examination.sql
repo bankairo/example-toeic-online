@@ -28,25 +28,14 @@ CREATE TABLE examinationquestion (
   CONSTRAINT fk_examinationquestion_examination FOREIGN KEY (exexaminationid) REFERENCES examination (examinationid)
 );
 
-CREATE TABLE exercisetype (
-  exercisetypeid BIGINT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  code VARCHAR(100) NOT NULL,
-  createddate TIMESTAMP NULL,
-  modifieddate TIMESTAMP NULL,
-  PRIMARY KEY (exercisetypeid),
-  UNIQUE (name)
-);
-
 CREATE TABLE exercise (
   exerciseid BIGINT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  exercisetypeid BIGINT NOT NULL,
+  type VARCHAR(45) NOT NULL,
   createddate TIMESTAMP NULL,
   modifieddate TIMESTAMP NULL,
   PRIMARY KEY (exerciseid),
-  UNIQUE (name),
-  CONSTRAINT fk_exercise_exercisetype FOREIGN KEY (exercisetypeid) REFERENCES exercisetype (exercisetypeid)
+  UNIQUE (name)
 );
 
 CREATE TABLE exercisequestion (
@@ -80,4 +69,3 @@ CREATE TABLE result (
 );
 
 INSERT INTO `exercisetype` VALUES (1,'Bài tập phần nghe','listening','2017-11-23 19:28:10',NULL),(2,'Bài tập phần đọc','reading','2017-11-23 19:28:10',NULL);
-

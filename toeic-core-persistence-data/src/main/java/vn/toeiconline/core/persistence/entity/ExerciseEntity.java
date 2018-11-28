@@ -20,9 +20,8 @@ public class ExerciseEntity {
     @Column(name = "modifiedDate")
     private Timestamp modifiedDate;
 
-    @ManyToOne
-    @JoinColumn(name = "exercisetypeid")
-    private ExerciseTypeEntity exerciseTypeEntity;
+    @Column(name = "type")
+    private String type;
 
     @OneToMany(mappedBy = "exerciseEntity", fetch = FetchType.LAZY)
     private List<ExerciseQuestionEntity> exerciseQuestionEntityList;
@@ -59,16 +58,16 @@ public class ExerciseEntity {
         this.modifiedDate = modifiedDate;
     }
 
-    public ExerciseTypeEntity getExerciseTypeEntity() {
-        return exerciseTypeEntity;
-    }
-
-    public void setExerciseTypeEntity(ExerciseTypeEntity exerciseTypeEntity) {
-        this.exerciseTypeEntity = exerciseTypeEntity;
-    }
-
     public List<ExerciseQuestionEntity> getExerciseQuestionEntityList() {
         return exerciseQuestionEntityList;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setExerciseQuestionEntityList(List<ExerciseQuestionEntity> exerciseQuestionEntityList) {

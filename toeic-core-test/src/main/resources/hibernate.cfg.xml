@@ -14,5 +14,10 @@
         <mapping class="vn.toeiconline.core.persistence.entity.UserEntity" />
         <mapping class="vn.toeiconline.core.persistence.entity.CommentEntity" />
         <mapping class="vn.toeiconline.core.persistence.entity.ListenGuidelineEntity" />
+        <mapping class="vn.toeiconline.core.persistence.entity.ExaminationEntity" />
+        <mapping class="vn.toeiconline.core.persistence.entity.ExaminationQuestionEntity" />
+        <mapping class="vn.toeiconline.core.persistence.entity.ExerciseEntity" />
+        <mapping class="vn.toeiconline.core.persistence.entity.ExerciseQuestionEntity" />
+        <mapping class="vn.toeiconline.core.persistence.entity.ResultEntity" />
     </session-factory>
 </hibernate-configuration>

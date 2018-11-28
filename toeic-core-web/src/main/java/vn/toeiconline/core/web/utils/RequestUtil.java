@@ -27,4 +27,15 @@ public class RequestUtil {
         bean.setSortDirection(sortDirection);
         bean.setFirstItem((page - 1) * bean.getMaxPageItems());
     }
+
+    public static void initSearchBeanManual(AbstractCommand command) {
+        int page = 1;
+        if (command != null) {
+            if (command.getPage() > 0) {
+                page = command.getPage();
+            }
+            command.setPage(page);
+            command.setFirstItem((page - 1) * command.getMaxPageItems());
+        }
+    }
 }

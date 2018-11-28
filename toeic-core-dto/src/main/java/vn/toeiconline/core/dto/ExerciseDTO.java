@@ -2,13 +2,15 @@ package vn.toeiconline.core.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ExerciseDTO implements Serializable {
     private Integer exerciseId;
     private String name;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
-    private ExerciseTypeDTO exerciseTypeDTO;
+    private String type;
+    private List<ExerciseQuestionDTO> exerciseQuestionDTOList;
 
     public Integer getExerciseId() {
         return exerciseId;
@@ -42,11 +44,19 @@ public class ExerciseDTO implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public ExerciseTypeDTO getExerciseTypeDTO() {
-        return exerciseTypeDTO;
+    public String getType() {
+        return type;
     }
 
-    public void setExerciseTypeDTO(ExerciseTypeDTO exerciseTypeDTO) {
-        this.exerciseTypeDTO = exerciseTypeDTO;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<ExerciseQuestionDTO> getExerciseQuestionDTOList() {
+        return exerciseQuestionDTOList;
+    }
+
+    public void setExerciseQuestionDTOList(List<ExerciseQuestionDTO> exerciseQuestionDTOList) {
+        this.exerciseQuestionDTOList = exerciseQuestionDTOList;
     }
 }

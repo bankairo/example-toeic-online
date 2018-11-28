@@ -8,7 +8,6 @@ public class SingletonDaoUtil {
     private static ListenGuidelineDaoImpl listenGuidelineDaoImpl = null;
     private static ExaminationDaoImpl examinationDaoImpl = null;
     private static ExaminationQuestionDaoImpl examinationQuestionDaoImpl = null;
-    private static ExerciseTypeDaoImpl exerciseTypeDaoImpl = null;
     private static ExerciseDaoImpl exerciseDaoImpl = null;
     private static ExerciseQuestionDaoImpl exerciseQuestionDaoImpl = null;
     private static ResultDaoImpl resultDaoImpl = null;
@@ -45,13 +44,6 @@ public class SingletonDaoUtil {
                 examinationQuestionDaoImpl = new ExaminationQuestionDaoImpl();
         }
         return examinationQuestionDaoImpl;
-    }
-
-    public static ExerciseTypeDaoImpl getExerciseTypeDaoInstance() {
-        if (exerciseTypeDaoImpl == null) {
-            exerciseTypeDaoImpl = new ExerciseTypeDaoImpl();
-        }
-        return exerciseTypeDaoImpl;
     }
 
     public static ExerciseDaoImpl getExerciseDaoInstance() {
