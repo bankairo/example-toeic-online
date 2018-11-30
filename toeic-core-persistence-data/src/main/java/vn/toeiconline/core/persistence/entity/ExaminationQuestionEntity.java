@@ -43,8 +43,11 @@ public class ExaminationQuestionEntity {
     @Column(name = "modifieddate")
     private Timestamp modifiedDate;
 
+    @Column(name = "type")
+    private String type;
+
     @ManyToOne
-    @JoinColumn(name = "exexaminationid")
+    @JoinColumn(name = "examinationid")
     private ExaminationEntity examinationEntity;
 
     public Integer getExaminationQuestionId() {
@@ -141,6 +144,14 @@ public class ExaminationQuestionEntity {
 
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public ExaminationEntity getExaminationEntity() {

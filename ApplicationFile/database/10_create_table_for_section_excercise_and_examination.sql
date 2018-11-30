@@ -1,9 +1,10 @@
 USE toeiconline;
 
+DROP IF EXITS
+
 CREATE TABLE examination (
   examinationid BIGINT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  image VARCHAR(255) NOT NULL,
   createddate TIMESTAMP NULL,
   modifieddate TIMESTAMP NULL,
   PRIMARY KEY (examinationid),
@@ -16,16 +17,16 @@ CREATE TABLE examinationquestion (
   audio VARCHAR(255) NULL,
   question TEXT NOT NULL,
   paragraph TEXT,
-  option1 VARCHAR(300) NOT NULL,
-  option2 VARCHAR(300) NOT NULL,
-  option3 VARCHAR(300) NOT NULL,
-  option4 VARCHAR(300) NOT NULL,
-  correctanswer VARCHAR(10) NOT NULL,
-  exexaminationid BIGINT NOT NULL,
+  option1 VARCHAR(300) NULL,
+  option2 VARCHAR(300) NULL,
+  option3 VARCHAR(300) NULL,
+  option4 VARCHAR(300) NULL,
+  correctanswer VARCHAR(10) NULL,
+  examinationid BIGINT NOT NULL,
   createddate TIMESTAMP NULL,
   modifieddate TIMESTAMP NULL,
   PRIMARY KEY (examinationquestionid),
-  CONSTRAINT fk_examinationquestion_examination FOREIGN KEY (exexaminationid) REFERENCES examination (examinationid)
+  CONSTRAINT fk_examinationquestion_examination FOREIGN KEY (examinationid) REFERENCES examination (examinationid)
 );
 
 CREATE TABLE exercise (

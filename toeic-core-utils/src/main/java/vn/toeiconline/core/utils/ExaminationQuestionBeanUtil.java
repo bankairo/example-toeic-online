@@ -16,7 +16,8 @@ public class ExaminationQuestionBeanUtil {
         dto.setOption3(entity.getOption3());
         dto.setOption4(entity.getOption4());
         dto.setCorrectAnswer(entity.getCorrectAnswer());
-        dto.setExaminationDTO(new ExaminationBeanUtil().entity2Dto(entity.getExaminationEntity()));
+        dto.setExamination(new ExaminationBeanUtil().entity2Dto(entity.getExaminationEntity()));
+        dto.setType(entity.getType());
         dto.setCreatedDate(entity.getCreatedDate());
         dto.setModifiedDate(entity.getModifiedDate());
         return dto;
@@ -33,7 +34,8 @@ public class ExaminationQuestionBeanUtil {
         entity.setOption3(dto.getOption3());
         entity.setOption4(dto.getOption4());
         entity.setCorrectAnswer(dto.getCorrectAnswer());
-        entity.setExaminationEntity(new ExaminationBeanUtil().dto2Entity(dto.getExaminationDTO()));
+        entity.setType(dto.getType());
+        entity.setExaminationEntity(new ExaminationBeanUtil().dto2Entity(dto.getExamination()));
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setModifiedDate(dto.getModifiedDate());
         return entity;

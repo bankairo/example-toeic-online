@@ -2,6 +2,7 @@ package vn.toeiconline.core.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class UserDTO implements Serializable {
     private Integer userId;
@@ -11,6 +12,7 @@ public class UserDTO implements Serializable {
     private Timestamp createdDate;
     private RoleDTO roleDTO;
     private UserImportDTO userImportDTO;
+    private List<ResultDTO> results;
 
     public Integer getUserId() {
         return userId;
@@ -66,5 +68,13 @@ public class UserDTO implements Serializable {
 
     public void setUserImportDTO(UserImportDTO userImportDTO) {
         this.userImportDTO = userImportDTO;
+    }
+
+    public List<ResultDTO> getResults() {
+        return results;
+    }
+
+    public void setResults(List<ResultDTO> results) {
+        this.results = results;
     }
 }

@@ -14,9 +14,13 @@ public class ExaminationQuestionDTO implements Serializable {
     private String option3;
     private String option4;
     private String correctAnswer;
+    private String type;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
-    private ExaminationDTO examinationDTO;
+    private ExaminationDTO examination;
+    private Integer number;
+    private String answerUser;
+
 
     public Integer getExaminationQuestionId() {
         return examinationQuestionId;
@@ -98,6 +102,14 @@ public class ExaminationQuestionDTO implements Serializable {
         this.correctAnswer = correctAnswer;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Timestamp getCreatedDate() {
         return createdDate;
     }
@@ -114,11 +126,27 @@ public class ExaminationQuestionDTO implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public ExaminationDTO getExaminationDTO() {
-        return examinationDTO;
+    public ExaminationDTO getExamination() {
+        return examination;
     }
 
-    public void setExaminationDTO(ExaminationDTO examinationDTO) {
-        this.examinationDTO = examinationDTO;
+    public void setExamination(ExaminationDTO examination) {
+        this.examination = examination;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getAnswerUser() {
+        return answerUser;
+    }
+
+    public void setAnswerUser(String answerUser) {
+        this.answerUser = answerUser;
     }
 }

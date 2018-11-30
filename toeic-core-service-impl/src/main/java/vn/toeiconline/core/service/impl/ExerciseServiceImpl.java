@@ -13,7 +13,7 @@ import java.util.Map;
 public class ExerciseServiceImpl implements ExerciseService {
     public Object[] findExerciseByProperties(Map<String, Object> property, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         List<ExerciseDTO> exerciseDTOS = new ArrayList<ExerciseDTO>();
-        Object[] objects = SingletonDaoUtil.getExerciseDaoInstance().findByProperty( property, sortExpression, sortDirection, offset, limit);
+        Object[] objects = SingletonDaoUtil.getExerciseDaoInstance().findByProperty( property, sortExpression, sortDirection, offset, limit, null);
         if (objects[1] != null) {
             for (ExerciseEntity item: (List<ExerciseEntity>)objects[1]) {
                 ExerciseDTO dto = ExerciseBeanUtil.entity2Dto(item);

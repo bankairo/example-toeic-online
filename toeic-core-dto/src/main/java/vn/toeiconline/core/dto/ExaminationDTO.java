@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 public class ExaminationDTO implements Serializable {
     private Integer examinationId;
     private String name;
-    private String image;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
@@ -24,14 +23,6 @@ public class ExaminationDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Timestamp getCreatedDate() {

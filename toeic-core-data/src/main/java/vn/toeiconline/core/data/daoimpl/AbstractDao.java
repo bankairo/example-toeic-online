@@ -64,7 +64,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public void save(T entity) {
+    public T save(T entity) {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -77,6 +77,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         } finally {
             session.close();
         }
+        return entity;
     }
 
     public T findById(ID id) {
@@ -98,7 +99,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public Object[] findByProperty(Map<String, Object> property, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+    public Object[] findByProperty(Map<String, Object> property, String sortExpression, String sortDirection, Integer offset, Integer limit, String whereClause) {
         List<T> list = new ArrayList<T>();
         Object totalRow = 0;
         Session session = this.getSession();
@@ -116,8 +117,11 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
                     i++;
                 }
                 for (int i1 = 0; i1 < property.size(); i1++) {
-                        sql1.append(" AND ").append("LOWER(" + params[i1] + ") LIKE '%' || :" + params[i1] + " || '%'");
+                        sql1.append(" AND ").append("LOWER(" + params[i1] + ") LIKE '%' || :" + params[i1] + " || '%' ");
                 }
+            }
+            if (whereClause != null) {
+                sql1.append(whereClause);
             }
             if (sortExpression != null && sortDirection != null) {
                 sql1.append(" order by ").append(sortExpression).append(" " + (sortDirection.equals(CoreConstant.SORT_DESC)?"desc":"asc"));
@@ -140,8 +144,11 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             sql2.append(this.getPersistenceClassName()).append(" WHERE 1=1 ");
             if (property.size() > 0) {
                 for (int j = 0; j < property.size(); j++) {
-                        sql2.append(" AND ").append("LOWER(" + params[j] + ") LIKE '%' || :" + params[j] + " || '%'");
+                        sql2.append(" AND ").append("LOWER(" + params[j] + ") LIKE '%' || :" + params[j] + " || '%' ");
                 }
+            }
+            if (whereClause != null) {
+                sql2.append(whereClause);
             }
             Query query2 = session.createQuery(sql2.toString());
             if (property.size() > 0) {

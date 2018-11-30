@@ -5,14 +5,14 @@
         </div>
         <div class="account_desc">
             <ul>
-                <c:if test="${not empty login_name}">
-                    <li>Xin chao: ${login_name}</li>
+                <c:if test="${not empty sessionUser}">
+                    <li>Xin chao: ${sessionUser}</li>
                     <c:url var="logoutUrl" value="/logout.html">
                         <c:param name="action" value="logout"/>
                     </c:url>
                     <li><a href="${logoutUrl}"><fmt:message key="label.logout" bundle="${lang}"/></a></li>
                 </c:if>
-                <c:if test="${empty login_name}">
+                <c:if test="${empty sessionUser}">
                     <c:url var="loginUrl" value="/login.html">
                         <c:param name="action" value="login"/>
                     </c:url>

@@ -16,9 +16,6 @@ public class ExaminationEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "image")
-    private String image;
-
     @Column(name = "createddate")
     private Timestamp createdDate;
 
@@ -45,14 +42,6 @@ public class ExaminationEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Timestamp getCreatedDate() {

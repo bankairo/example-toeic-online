@@ -17,7 +17,7 @@
             <ul class="nav ace-nav">
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        Welcome, ${login_name}
+                        Welcome, ${sessionUser}
 
                     </a>
                 <li class="light-blue dropdown-modal">
