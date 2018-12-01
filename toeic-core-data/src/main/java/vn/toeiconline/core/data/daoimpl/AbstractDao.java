@@ -1,5 +1,6 @@
 package vn.toeiconline.core.data.daoimpl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import vn.toeiconline.core.common.constant.CoreConstant;
@@ -107,31 +108,43 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         try {
             StringBuilder sql1 = new StringBuilder("from ");
             sql1.append(this.getPersistenceClassName()).append(" WHERE 1=1 ");
-            String[] params = new String[property.size()];
-            Object[] values = new Object[property.size()];
-            if (property.size() > 0) {
-                int i = 0;
-                for (Map.Entry<String, Object> item: property.entrySet()) {
-                    params[i] = item.getKey();
-                    values[i] = item.getValue();
-                    i++;
-                }
-                for (int i1 = 0; i1 < property.size(); i1++) {
-                        sql1.append(" AND ").append("LOWER(" + params[i1] + ") LIKE '%' || :" + params[i1] + " || '%' ");
-                }
+            Object[] objects = HibernateUtil.buildPropertiesToAppend(property, whereClause);
+            String strAppend = objects[0].toString();
+            String[] params = (String[]) objects[1];
+            Object[] values = (Object[]) objects[2];
+            if (StringUtils.isNotBlank(strAppend)) {
+                sql1.append(strAppend);
             }
-            if (whereClause != null) {
-                sql1.append(whereClause);
-            }
+//            String[] params = new String[property.size()];
+//            Object[] values = new Object[property.size()];
+//            if (property.size() > 0) {
+//                int i = 0;
+//                for (Map.Entry<String, Object> item: property.entrySet()) {
+//                    params[i] = item.getKey();
+//                    values[i] = item.getValue();
+//                    i++;
+//                }
+//                for (int i1 = 0; i1 < property.size(); i1++) {
+//                        sql1.append(" AND ").append("LOWER(" + params[i1] + ") LIKE '%' || :" + params[i1] + " || '%' ");
+//                }
+//            }
+//            if (whereClause != null) {
+//                sql1.append(whereClause);
+//            }
             if (sortExpression != null && sortDirection != null) {
                 sql1.append(" order by ").append(sortExpression).append(" " + (sortDirection.equals(CoreConstant.SORT_DESC)?"desc":"asc"));
             }
             Query query1 = session.createQuery(sql1.toString());
-            if (property.size() > 0) {
-                for (int i2 = 0; i2 < property.size(); i2++) {
+            if (params != null && values != null) {
+                for (int i2 = 0; i2 < params.length; i2++) {
                     query1.setParameter(params[i2], values[i2]);
                 }
             }
+//            if (property.size() > 0) {
+//                for (int i2 = 0; i2 < property.size(); i2++) {
+//                    query1.setParameter(params[i2], values[i2]);
+//                }
+//            }
             if (offset != null && offset >= 0) {
                 query1.setFirstResult(offset);
             }
@@ -142,20 +155,28 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
 
             StringBuilder sql2 = new StringBuilder("select count(*) from ");
             sql2.append(this.getPersistenceClassName()).append(" WHERE 1=1 ");
-            if (property.size() > 0) {
-                for (int j = 0; j < property.size(); j++) {
-                        sql2.append(" AND ").append("LOWER(" + params[j] + ") LIKE '%' || :" + params[j] + " || '%' ");
-                }
+            if (StringUtils.isNotBlank(strAppend)) {
+                sql2.append(strAppend);
             }
-            if (whereClause != null) {
-                sql2.append(whereClause);
-            }
+//            if (property.size() > 0) {
+//                for (int j = 0; j < property.size(); j++) {
+//                        sql2.append(" AND ").append("LOWER(" + params[j] + ") LIKE '%' || :" + params[j] + " || '%' ");
+//                }
+//            }
+//            if (whereClause != null) {
+//                sql2.append(whereClause);
+//            }
             Query query2 = session.createQuery(sql2.toString());
-            if (property.size() > 0) {
-                for (int j1 = 0; j1 < property.size(); j1++) {
+            if (params != null && values != null) {
+                for (int j1 = 0; j1 < params.length; j1++) {
                     query2.setParameter(params[j1], values[j1]);
                 }
             }
+//            if (property.size() > 0) {
+//                for (int j1 = 0; j1 < property.size(); j1++) {
+//                    query2.setParameter(params[j1], values[j1]);
+//                }
+//            }
             totalRow = query2.list().get(0);
             transaction.commit();
         } catch (HibernateException e) {
