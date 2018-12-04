@@ -25,4 +25,6 @@ public class WebConstant {
     public static final String EXAMINATIONQUESTION_TYPE_PHOTO = "PHOTO";
     public static final String EXAMINATIONQUESTION_TYPE_QUESTION_RESPONSE = "QUESTION_RESPONSE";
     public static final String EXAMINATIONQUESTION_TYPE_SINGLE_PASSAGE = "SINGLE_PASSAGE";
+    public static final String EXERCISE_QUESTION = "exercisequestion";
+    public static final String EXCEL = "excel";
 }

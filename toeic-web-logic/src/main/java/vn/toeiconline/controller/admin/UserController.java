@@ -65,7 +65,6 @@ public class UserController extends HttpServlet {
         } else if (command.getUrlType() != null && command.getUrlType().equals(VALIDATE_IMPORT)) {
             List<UserImportDTO> userImportDTOS = (List<UserImportDTO>) SessionUtil.getInstance().getValue(request, IMPORT_USER_LIST);
             command.setUserImportDTOS(returnListUserImport(request, command, userImportDTOS));
-
             request.setAttribute(WebConstant.LIST_ITEMS, command);
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/importuser.jsp");
             rd.forward(request, response);
@@ -148,8 +147,8 @@ public class UserController extends HttpServlet {
         for (UserImportDTO item: excelValue) {
             validateRequireFiled(item);
             validateDuplicate(item, stringSet);
-            SingletonServiceUtil.getUserServiceInstance().validateUserImport(excelValue);
         }
+        SingletonServiceUtil.getUserServiceInstance().validateUserImport(excelValue);
     }
 
     private void validateDuplicate(UserImportDTO item, Set<String> stringSet) {

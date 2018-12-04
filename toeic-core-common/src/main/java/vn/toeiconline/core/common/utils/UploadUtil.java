@@ -25,7 +25,7 @@ public class UploadUtil {
         String address = "/fileupload";
         boolean check = true;
         String fileLocation = null;
-        String name = null;
+        String fileName = null;
         Map<String, String> mapReturnValue = new HashMap<String, String>();
 
         checkAndCreateFolder(address, path);
@@ -52,10 +52,17 @@ public class UploadUtil {
             List<FileItem> items = upload.parseRequest(request);
             for (FileItem item: items) {
                 if (!item.isFormField()) {
-                    name = item.getName();
+                    String name = item.getName();
                     if (StringUtils.isNotBlank(name)) {
                         File uploadedFile = new File(address + File.separator + path + File.separator + name);
-                        fileLocation = address + File.separator + path + File.separator + name;
+                        if (fileLocation != null) {
+                            fileLocation += "," + address + File.separator + path + File.separator + name;
+                            fileName += "," + path + File.separator + name;
+                        } else {
+                            fileLocation = address + File.separator + path + File.separator + name;
+                            fileName = path + File.separator + name;
+                        }
+
                         boolean isExist = uploadedFile.exists();
                         try {
                             if (isExist) {
@@ -87,11 +94,6 @@ public class UploadUtil {
         } catch (FileUploadException e) {
             check = false;
             log.error(e.getMessage(), e);
-        }
-
-        String fileName = "";
-        if (StringUtils.isNotBlank(name)) {
-            fileName = path + File.separator + name;
         }
 
         return new Object[]{check, fileLocation, fileName, mapReturnValue};

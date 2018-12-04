@@ -1,7 +1,7 @@
 USE toeiconline;
 
-INSERT INTO exercise(name, createddate, type) VALUES ('Bài tập nghe 1', CURRENT_TIMESTAMP, 'listening');
-INSERT INTO exercise(name, createddate, type) VALUES ('Bài tập đọc 1', CURRENT_TIMESTAMP, 'reading');
+INSERT INTO exercise(name, createddate, type) VALUES (N'Bài tập nghe 2', CURRENT_TIMESTAMP, 'listening');
+INSERT INTO exercise(name, createddate, type) VALUES (N'Bài tập đọc 2', CURRENT_TIMESTAMP, 'reading');
 
 INSERT INTO exercisequestion
 (image, audio, question, option1, option2, option3, option4, correctanswer, createddate, exerciseid)

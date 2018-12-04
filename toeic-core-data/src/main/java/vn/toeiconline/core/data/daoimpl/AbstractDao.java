@@ -230,4 +230,29 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
+    public List<T> findWhereIn(String filed, List<Object> properties) {
+        List<T> result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            StringBuilder sql = new StringBuilder(" FROM ");
+            sql.append(getPersistenceClassName());
+            if (filed != null && properties != null) {
+                sql.append(" WHERE ").append(filed).append(" IN (:" + filed + ") ");
+            }
+            Query query = session.createQuery(sql.toString());
+            if (filed != null && properties != null) {
+                query.setParameterList(filed, properties);
+            }
+            result = query.list();
+            transaction.commit();
+        } catch (HibernateException e) {
+            log.error(e.getMessage(), e);
+            transaction.rollback();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
 }

@@ -20,7 +20,7 @@
                     <div class="span6">
 
                         <div class="carousel-caption">
-                            <h1>tùng lâm</h1>
+                            <h1>Khóa Học Toeic Online</h1>
                             <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                             <a class="btn btn-large btn-primary" href="#">Sign up today</a>
                         </div>

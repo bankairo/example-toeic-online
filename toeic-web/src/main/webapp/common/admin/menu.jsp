@@ -7,6 +7,9 @@
     <c:param name="urlType" value="url_list"/>
 </c:url>
 <c:url var="uploadAudioImageUrl" value="/admin-exercise-upload.html"/>
+<c:url var="exercisQuestionUrl" value="/admin-exercise-question-list.html">
+    <c:param name="urlType" value="url_list"/>
+</c:url>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
     <div class="sidebar-shortcuts">
@@ -87,6 +90,15 @@
                     <a href="${uploadAudioImageUrl}">
                         <i class="menu-icon fa fa-caret-right"></i>
                         <fmt:message key="label.upload.audio.image" bundle="${lang}"/>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+            <ul class="submenu">
+                <li class="">
+                    <a href="${exercisQuestionUrl}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        <fmt:message key="label.exercise.question.list" bundle="${lang}"/>
                     </a>
                     <b class="arrow"></b>
                 </li>

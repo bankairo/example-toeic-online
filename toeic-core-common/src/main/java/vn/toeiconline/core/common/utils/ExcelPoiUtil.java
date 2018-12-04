@@ -44,7 +44,7 @@ public class ExcelPoiUtil {
                         break;
                 }
                 break;
-    }
+        }
         return cellValue;
     }
  }

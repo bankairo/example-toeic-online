@@ -34,16 +34,6 @@ public class ListenGuidelineController extends HttpServlet {
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, req);
         ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
-            if (command.getCrudaction() != null && command.getCrudaction().equals(WebConstant.REDIRECT_DELETE)) {
-                List<Integer> ids = new ArrayList<Integer>();
-                for (String item: command.getCheckList()) {
-                    ids.add(Integer.parseInt(item));
-                }
-                Integer result = SingletonServiceUtil.getListenGuidelineServiceInstance().delete(ids);
-                if (result != ids.size()) {
-                    command.setCrudaction(WebConstant.REDIRECT_ERROR);
-                }
-            }
             excuteSearchListenGuideline(req, command);
             if (command.getCrudaction() != null) {
                 Map<String, String> mapMessage = buildMapMessage(bundle);
@@ -72,40 +62,53 @@ public class ListenGuidelineController extends HttpServlet {
         ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
         UploadUtil uploadUtil = new UploadUtil();
         Set<String> titleValue = buildSetValue();
-
         Object[] objects = uploadUtil.writeOrUpdateFile(req, titleValue, WebConstant.LISTENGUIDELINE);
         boolean checkStatusUploadImage = (Boolean) objects[0];
-        if (!checkStatusUploadImage) {
-            resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+        if (req.getParameter("crudaction") != null && req.getParameter("crudaction").equals(WebConstant.REDIRECT_DELETE)) {
+            List<Integer> ids = new ArrayList<Integer>();
+            String[] checkList = req.getParameterValues("checkList");
+            for (String item: checkList) {
+                ids.add(Integer.parseInt(item));
+            }
+            Integer result = SingletonServiceUtil.getListenGuidelineServiceInstance().delete(ids);
+            if (result != ids.size()) {
+                resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+            } else {
+                resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_delete");
+            }
         } else {
-            ListenGuidelineDTO dto = command.getPojo();
-            if (StringUtils.isNotBlank(objects[2].toString())) {
-                dto.setImage(objects[2].toString());
-            }
-            Map<String, String> mapValue = (HashMap<String, String>) objects[3];
-            if (mapValue != null) {
-                dto = returnValueOfDTO(dto, mapValue);
-            }
-            if (dto != null) {
-                if (dto.getListenGuidelineId() != null) {
-                    ListenGuidelineDTO listenGuidelineDTO = SingletonServiceUtil.getListenGuidelineServiceInstance().findListenGuidelineById("listenGuidelineId", dto.getListenGuidelineId());
-                    if (dto.getImage() == null) {
-                        dto.setImage(listenGuidelineDTO.getImage());
-                    }
-                    dto.setCreatedDate(listenGuidelineDTO.getCreatedDate());
-                    dto = SingletonServiceUtil.getListenGuidelineServiceInstance().updateListenGuideline(dto);
-                    if (dto != null) {
-                        resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_update");
+            if (!checkStatusUploadImage) {
+                resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+            } else {
+                ListenGuidelineDTO dto = command.getPojo();
+                if (StringUtils.isNotBlank(objects[2].toString())) {
+                    dto.setImage(objects[2].toString());
+                }
+                Map<String, String> mapValue = (HashMap<String, String>) objects[3];
+                if (mapValue != null) {
+                    dto = returnValueOfDTO(dto, mapValue);
+                }
+                if (dto != null) {
+                    if (dto.getListenGuidelineId() != null) {
+                        ListenGuidelineDTO listenGuidelineDTO = SingletonServiceUtil.getListenGuidelineServiceInstance().findListenGuidelineById("listenGuidelineId", dto.getListenGuidelineId());
+                        if (dto.getImage() == null) {
+                            dto.setImage(listenGuidelineDTO.getImage());
+                        }
+                        dto.setCreatedDate(listenGuidelineDTO.getCreatedDate());
+                        dto = SingletonServiceUtil.getListenGuidelineServiceInstance().updateListenGuideline(dto);
+                        if (dto != null) {
+                            resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_update");
+                        } else {
+                            resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+                        }
                     } else {
-                        resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
-                    }
-                } else {
-                    try {
-                        SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(dto);
-                        resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_insert");
-                    } catch (ConstraintViolationException e) {
-                        log.error(e.getMessage(), e);
-                        resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+                        try {
+                            SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(dto);
+                            resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_insert");
+                        } catch (ConstraintViolationException e) {
+                            log.error(e.getMessage(), e);
+                            resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+                        }
                     }
                 }
             }

@@ -1,13 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="requestUrl" value="/admin-guideline-listen-list.html" />
-<c:url var="listenGuidelineEditUrl" value="/admin-guideline-listen-edit.html">
+<c:url var="requestUrl" value="/admin-exercise-question-list.html" />
+<c:url var="exerciseEditUrl" value="/admin-exercise-question-edit.html">
     <c:param name="urlType" value="url_edit"/>
 </c:url>
-<c:url var="formUrl" value="/admin-guideline-listen-list.html"/>
+<c:url var="formUrl" value="/admin-exercise-question-list.html"/>
+<c:url var="importUrl" value="/admin-execise-question-import.html">
+    <c:param name="urlType" value="show_import_exercise_question"/>
+</c:url>
 <html>
 <head>
-    <title><fmt:message key="label.guideline.listen.list" bundle="${lang}"/></title>
+    <title><fmt:message key="label.exercise.management" bundle="${lang}"/></title>
 </head>
 <body>
 <div class="main-content">
@@ -22,7 +25,7 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="#"><fmt:message key="label.home" bundle="${lang}"/></a>
                 </li>
-                <li class="active"><fmt:message key="label.guideline.listen.list" bundle="${lang}"/></li>
+                <li class="active"><fmt:message key="label.exercise.management" bundle="${lang}"/></li>
             </ul><!-- /.breadcrumb -->
         </div>
         <div class="page-content">
@@ -52,10 +55,10 @@
                                         <div class="widget-main">
                                             <div class="form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label"><fmt:message key="label.guideline.listen.title" bundle="${lang}"/></label>
+                                                    <label class="col-sm-2 control-label"><fmt:message key="label.exercise.name" bundle="${lang}"/></label>
                                                     <div class="col-sm-8">
                                                         <div class="fg-line">
-                                                            <input type="text" value="${items.pojo.title}" class="form-control input-sm" name="pojo.title"/>
+                                                            <input type="text" value="${items.exerciseNameSearch}" class="form-control input-sm" name="exerciseNameSearch"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -75,7 +78,7 @@
                                 <div class="table-btn-controls">
                                     <div class="pull-right tableTools-container">
                                         <div class="dt-buttons btn-overlap btn-group">
-                                            <c:url var="addUrl" value="/admin-guideline-listen-edit.html">
+                                            <c:url var="addUrl" value="/admin-exercise-question-edit.html">
                                                 <c:param name="urlType" value="url_edit"/>
                                             </c:url>
                                             <a flag="info" class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" href="${addUrl}"
@@ -90,6 +93,11 @@
                                                         <i class="fa fa-trash-o bigger-110 pink"></i>
                                                     </span>
                                             </button>
+                                            <a flag="info" class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" href="${importUrl}">
+                                                <span>
+                                                    <i class="fa fa-file" aria-hidden="true"></i>
+                                                </span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -105,17 +113,18 @@
                                                             <input type='checkbox' id='checkAll' class='check-box-element'>
                                                             </fieldset>" class="center select-cell" headerClass="center select-cell">
                                         <fieldset>
-                                            <input type="checkbox" name="checkList" id="checkbox_${tableList.listenGuidelineId}" value="${tableList.listenGuidelineId}" class="check-box-element"/>
+                                            <input type="checkbox" name="checkList" id="checkbox_${tableList.exerciseQuestionId}" value="${tableList.exerciseQuestionId}" class="check-box-element"/>
                                         </fieldset>
                                     </display:column>
-                                    <display:column property="title" titleKey="label.guideline.listen.title" sortable="true" sortName="title"/>
-                                    <display:column property="content" titleKey="label.guideline.listen.content" sortable="true" sortName="content"/>
+                                    <display:column property="exerciseDTO.name" titleKey="label.exercise.name" sortable="true" sortName="name"/>
+                                    <display:column property="question" titleKey="label.exercise.question" sortable="true" sortName="question"/>
+                                    <display:column property="correctAnswer" titleKey="label.exercise.correct.answer" sortable="true" sortName="correctAnswer"/>
                                     <display:column headerClass="col-actions" titleKey="label.action">
-                                        <c:url var="editUrl" value="/admin-guideline-listen-edit.html">
+                                        <c:url var="editUrl" value="/admin-exercise-question-edit.html">
                                             <c:param name="urlType" value="url_edit"/>
-                                            <c:param name="pojo.listenGuidelineId" value="${tableList.listenGuidelineId}"/>
+                                            <c:param name="pojo.exerciseQuestionId" value="${tableList.exerciseQuestionId}"/>
                                         </c:url>
-                                        <a class="btn btn-sm btn-primary btn-edit" href="${editUrl}" data-toggle="tooltip" title="<fmt:message key='label.listenguideline.edit' bundle='${lang}'/>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                        <a class="btn btn-sm btn-primary btn-edit" href="${editUrl}" data-toggle="tooltip" title="<fmt:message key='label.exercise.question.edit' bundle='${lang}'/>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                         <%--<a class="btn btn-sm btn-danger btn-cancel" data-toggle="tooltip" title="<fmt:message key='label.listenguideline.delete' bundle='${lang}'/>"><i class="fa fa-trash" aria-hidden="true"></i></a>--%>
                                     </display:column>
                                 </display:table>
